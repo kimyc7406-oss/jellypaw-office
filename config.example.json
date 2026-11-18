@@ -1,0 +1,20 @@
+{
+  "devices": [
+    {"id": "home", "label": "집", "animal": "bear"},
+    {"id": "work", "label": "회사", "animal": "cat"},
+    {"id": "laptop", "label": "노트북", "animal": "rabbit"}
+  ],
+  "leader": "home",
+  "share_dir": null,
+  "local_dir": "./data",
+  "private_devices": [],
+  "owner_title": "감독",
+  "checklist_path": null,
+  "lessons_path": null,
+  "weather": null,
+  "edge_path": null,
+  "worker_dirs": [],
+  "meet_at": ["11:00", "19:00"],
+  "port": 8765,
+  "play": true
+}

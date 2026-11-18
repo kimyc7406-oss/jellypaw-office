@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.part
+config.json
+data/
+shared_local/
+shares_local/
+approvals_local/
+*_local.json
+*.local.txt
+manifest.json
+_이전판*/

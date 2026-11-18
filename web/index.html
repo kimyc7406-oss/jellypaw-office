@@ -308,7 +308,7 @@ document.getElementById("errbadge").onclick=()=>{const m=JERR.last[0]||"";consol
 </script>
 <script>window.JP=null;</script>
 <script>
-const JPC=window.JP||{me:"me",leader:"me",owner:"감독",private:[],strict:false,single:true,play:true,devices:[{id:"me",label:"나",animal:"bear"}]};
+const JPC=window.JP||{me:"me",leader:"me",owner:"사장",private:[],strict:false,single:true,play:true,devices:[{id:"me",label:"나",animal:"bear"}]};
 const W4=JPC.devices.map(d=>d.id),LEAD=JPC.leader,PRIV=JPC.private||[],ANI={},SPR={};
 JPC.devices.forEach(d=>{ANI[d.id]=d.animal;SPR[d.id]=d.animal});
 const ANI_EMO={bear:"🐻",cat:"🐱",rabbit:"🐰",squirrel:"🐿️"},AZ={bear:"bear",cat:"cat",rabbit:"rabbit",squirrel:"archive"};
@@ -508,12 +508,12 @@ function plan(){
   return {list:[lion,...big,...shown],mores};
 }
 
-const OFFICE={"읽기":"서류 검토 중","찾기":"자료 찾는 중","파일 찾기":"서류철 뒤지는 중","고치기":"문서 고치는 중","쓰기":"보고서 쓰는 중","노트 고치기":"문서 고치는 중","명령":"현장 작업 중","지켜보기":"현장 지켜보는 중","검색":"시장 조사 중","웹 읽기":"자료 조사 중","인턴 부르기":"인턴한테 일 맡기는 중","쪽지":"사내 메신저 보내는 중","감독께 질문":"결재 올리는 중","스킬":"업무 매뉴얼 보는 중","도구 찾기":"비품 찾는 중"};
+const OFFICE={"읽기":"서류 검토 중","찾기":"자료 찾는 중","파일 찾기":"서류철 뒤지는 중","고치기":"문서 고치는 중","쓰기":"보고서 쓰는 중","노트 고치기":"문서 고치는 중","명령":"현장 작업 중","지켜보기":"현장 지켜보는 중","검색":"시장 조사 중","웹 읽기":"자료 조사 중","인턴 부르기":"인턴한테 일 맡기는 중","쪽지":"사내 메신저 보내는 중","사장께 질문":"결재 올리는 중","스킬":"업무 매뉴얼 보는 중","도구 찾기":"비품 찾는 중"};
 function officeSpeak(t){t=String(t||"");if(OFFICE[t])return OFFICE[t];if(/notion/i.test(t))return"사내 위키 정리 중";if(/c4d|blender|unreal|ue_|render|scene|mesh/i.test(t))return"3D 작업 중";if(/ae_|resolve|davinci/i.test(t))return"영상 작업 중";if(/painter|rizom|uv|pipe_/i.test(t))return"텍스처 작업 중";if(/office_/i.test(t))return"사무실 일 보는 중";if(/browser|navigate|page|screenshot|javascript|computer/i.test(t))return"화면 확인 중";if(/mail|gmail|calendar/i.test(t))return"메일 · 일정 보는 중";return"업무 처리 중"}
 function bubbleOf(a){
   if(KKN[a.who])return["",false];
   if(a.who==="boss"){const n=Object.values(S.sites||{}).reduce((k,si)=>k+((si.boss_hand||{}).n||0),0);return[n?`내 손 기다리는 거 ${n}개`:"",false]}
-  if(a.wait)return["감독님, 대답 기다려요!",true];
+  if(a.wait)return["사장님, 대답 기다려요!",true];
   if(a.err)return[a.err.kind==="limit"?`<span class="tl">💤 한도</span> ${esc(a.err.text||"")}`:`<span class="tl">💢 멈췄어요</span> ${esc(a.err.text||"")}`,true];
   if(a.ask)return[`<span class="tl">✋ 결재 기다리는 듯</span>${a.act?" · "+esc(officeSpeak(a.act.tool)):""}`,true];
   if(a.who!=="intern"&&leadOf(a)){
@@ -545,12 +545,12 @@ function render(){
     if(it){let h=0;for(const c of a.id)h=(h*31+c.charCodeAt(0))%360;img.style.filter=`hue-rotate(${h}deg) drop-shadow(0 4px 3px #0004)`}
     e.style.setProperty("--tc",KKN[a.who]?"#6b5b4b":(TEAMC[a.dev]||"#999"));
     const k=staffKey(a),s=st(k);const pl=e.querySelector(".plate");pl.style.setProperty("--c",KKN[a.who]?"#6b5b4b":(TEAMC[a.dev]||"#999"));
-    pl.innerHTML=KKN[a.who]?`${KKN[a.who][0]} <b>${KKN[a.who][1]}</b> · 꼰대`:it?esc(a.title&&a.title!=="보조 일"?a.title:(a.kind||"인턴")):a.who==="boss"?`🦁 <b>${esc(s.name||"감독")}</b> · ${esc(s.rank||"대표")} · 창가 사장실`:
+    pl.innerHTML=KKN[a.who]?`${KKN[a.who][0]} <b>${KKN[a.who][1]}</b> · 꼰대`:it?esc(a.title&&a.title!=="보조 일"?a.title:(a.kind||"인턴")):a.who==="boss"?`🦁 <b>${esc(s.name||"사장")}</b> · ${esc(s.rank||"대표")} · 창가 사장실`:
       `<b>${esc(s.name||a.who)}</b> · ${esc([s.title||(a.secretary?"비서":""),gradeTxt(s)].filter(Boolean).join(" · "))}${S.agents.filter(x=>x.dev===a.dev&&x.who===a.who&&x.room!=="off").length>1&&a.title?" · "+esc(String(a.title).slice(0,14)):""}`;
     const b=e.querySelector(".bub");const sayOn=e._say&&Date.now()<e._sayT;
     const [html,must]=sayOn?[esc(e._say),true]:bubbleOf(a);
     b.innerHTML=html;b.hidden=!html;b.classList.toggle("must",must||sayOn);
-    let bd=e.querySelector(".badge");const want=a.wait?["wait","감독 불러요 ?"]:a.err?(a.err.kind==="limit"?["sleep","💤 한도"]:["err","💢 멈춤"]):a.ask?["ask","✋ 허락?"]:(mailOf(a)||(a.slack?(hears(a)?["listen","👂 대기 중"]:["zz","노는 중"]):null));
+    let bd=e.querySelector(".badge");const want=a.wait?["wait","사장 불러요 ?"]:a.err?(a.err.kind==="limit"?["sleep","💤 한도"]:["err","💢 멈춤"]):a.ask?["ask","✋ 허락?"]:(mailOf(a)||(a.slack?(hears(a)?["listen","👂 대기 중"]:["zz","노는 중"]):null));
     if(want){if(!bd){bd=document.createElement("div");e.appendChild(bd)}bd.className="badge "+want[0];bd.textContent=want[1]}else if(bd)bd.remove();
     const call=a.wait||a.ask||a.err;if(call&&!seenWait.has(a.id)){seenWait.add(a.id);beep()}if(!call)seenWait.delete(a.id);
   }
@@ -611,7 +611,7 @@ function extras(){
     e.textContent="🕸️";e.style.fontSize=stage.clientWidth*Math.min(40,14+du.n*1.3)/FW+"px";e.style.opacity=Math.min(1,.45+du.old_days*.2);e.title=`${DEVKO[d]} 교훈 대기 ${du.n}줄 · 가장 오래된 것 ${du.old_days}일`}
 
   const n=Object.values(SI).reduce((k,si)=>k+((si.boss_hand||{}).n||0),0),tw=xel("tower","tower");
-  at(tw,1262,470);tw.style.height=Math.min(n,20)*3.2/FH*100+"%";tw.classList.toggle("fall",n>20);tw.hidden=!n;tw.title=`감독 손 기다리는 거 ${n}개`;
+  at(tw,1262,470);tw.style.height=Math.min(n,20)*3.2/FH*100+"%";tw.classList.toggle("fall",n>20);tw.hidden=!n;tw.title=`사장 손 기다리는 거 ${n}개`;
 
   const U=Object.values(S.usage||{}).reduce((k,u)=>k+(u.out||0),0),ok=(S.approvals||[]).filter(a=>a.status==="승인").length,wb=xel("wb","wb");
 
@@ -958,12 +958,12 @@ function stamp(kind,doc){
 function person(keep){
   const box=$("person");
   if(sel==="boss"){const H=Object.entries(S.sites||{}).filter(([d,si])=>si.boss_hand&&si.boss_hand.n);
-    box.hidden=false;box.innerHTML=`<div class="who"><img src="${IMG.boss}" alt=""><div><h3>${esc(st("boss").name||"감독")}</h3><div class="muted">${esc(st("boss").rank||"대표")} · 사장실${st("boss").eval!=null?" · 직원들이 매긴 지난 평가 "+st("boss").eval+" / 5":""}</div></div></div>
-    ${H.map(([d,si])=>`<div class="item"><span class="k">${DEVKO[d]} · 감독 손 ${si.boss_hand.n}칸</span>${(si.boss_hand.items||[]).map(t=>`<div class="muted">· ${esc(t)}</div>`).join("")||'<div class="muted">(비공개 기기는 수만 · 줄은 그 기기 창에서)</div>'}</div>`).join("")||'<div class="muted" style="margin-top:8px">감독 손 기다리는 칸 없음</div>'}
+    box.hidden=false;box.innerHTML=`<div class="who"><img src="${IMG.boss}" alt=""><div><h3>${esc(st("boss").name||"사장")}</h3><div class="muted">${esc(st("boss").rank||"대표")} · 사장실${st("boss").eval!=null?" · 직원들이 매긴 지난 평가 "+st("boss").eval+" / 5":""}</div></div></div>
+    ${H.map(([d,si])=>`<div class="item"><span class="k">${DEVKO[d]} · 사장 손 ${si.boss_hand.n}칸</span>${(si.boss_hand.items||[]).map(t=>`<div class="muted">· ${esc(t)}</div>`).join("")||'<div class="muted">(비공개 기기는 수만 · 줄은 그 기기 창에서)</div>'}</div>`).join("")||'<div class="muted" style="margin-top:8px">사장 손 기다리는 칸 없음</div>'}
     <div class="row"><button class="b" id="leave">🌙 퇴근 보내기(모두에게)</button><button class="b ghost" id="close">닫기</button></div>`;$("close").onclick=()=>{sel=null;box.hidden=true};
 
     $("leave").onclick=e=>{const b=e.currentTarget;if(!b.dataset.sure){b.dataset.sure=1;b.textContent="정말 보낼까? 창 한 턴 × "+W4.length+" — 한 번 더";return}
-      b.disabled=true;fetch("/api/say",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({to:W4,text:"[퇴근] 오늘 일 마무리해 줘 — 하던 일 기록 · 상태판 · 교훈 대기 정리하고 쉬기(감독 사무실 퇴근 버튼)"})}).then(r=>r.json()).then(j=>{
+      b.disabled=true;fetch("/api/say",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({to:W4,text:"[퇴근] 오늘 일 마무리해 줘 — 하던 일 기록 · 상태판 · 교훈 대기 정리하고 쉬기(사장 사무실 퇴근 버튼)"})}).then(r=>r.json()).then(j=>{
         if(j.ok){for(const a of S.agents)if(a.who!=="intern"&&a.who!=="boss")say(a.id,"퇴근 준비할게요! 🎒");b.textContent="퇴근 보냄"}else{b.textContent=j.err||"못 보냄"}})};return}
   const a=S.agents.find(x=>x.id===sel);if(!a){box.hidden=true;return}
   if(keep&&box.contains(document.activeElement))return;
@@ -984,7 +984,7 @@ function person(keep){
   $("close").onclick=()=>{sel=null;box.hidden=true};
   if(!isLead()&&a.dev!==S.dev&&$("shopbtn")){$("shopbtn").disabled=true;$("shopbtn").title="남의 쿠키로는 못 삼(리더 화면은 다)"}
   if(!S.play&&$("shopbtn"))$("shopbtn").hidden=true;
-  if(!isLead())["pay","scold","praise","promo","setrk","rk","unpaid"].forEach(i=>{const e=document.getElementById(i);if(e){e.disabled=true;e.title="감독 단추는 리더 화면에서"}});
+  if(!isLead())["pay","scold","praise","promo","setrk","rk","unpaid"].forEach(i=>{const e=document.getElementById(i);if(e){e.disabled=true;e.title="사장 단추는 리더 화면에서"}});
   $("praise").onclick=()=>post({who:k,praise:1},()=>{fx(a.id,"👏");say(a.id,["헤헤 감사합니다!","소문 좀 내주세요 대표님","오늘 일할 맛 나네요"][Math.random()*3|0])});
   if($("unpaid"))$("unpaid").onclick=()=>{const was=!!st(k).unpaid;post({who:k,unpaid:!was},()=>say(a.id,was?"휴가 취소… 다시 일할게요":"무급 휴가라니요 대표님…"))};
   $("shopbtn").onclick=()=>{$("shop").hidden=!$("shop").hidden};
@@ -1032,7 +1032,7 @@ function openDoc(k,i){const L=k==="sign"?(S.approvals||[]):repList();if(!L.lengt
 
   if(k==="sign"&&a.kind==="대출"&&isLead()&&(a.status||"대기")==="대기"&&W4.includes(a.by)){
     const box=document.createElement("div");box.className="nego";
-    box.innerHTML=`<b>🏦 ${esc(st(a.by).name||a.by)} 감독 승인 대출</b> · 두 칸 위 집으로 이사(보증금 = 주 수입 × 12 · 빌림 × 8 까지 · 이자 한 번 35% · 주급 절반 자동 갚기) <button class="b" data-a="accept">승인</button> <button class="b red" data-a="reject">거절</button>`;
+    box.innerHTML=`<b>🏦 ${esc(st(a.by).name||a.by)} 사장 승인 대출</b> · 두 칸 위 집으로 이사(보증금 = 주 수입 × 12 · 빌림 × 8 까지 · 이자 한 번 35% · 주급 절반 자동 갚기) <button class="b" data-a="accept">승인</button> <button class="b red" data-a="reject">거절</button>`;
     m.querySelector(".abody").appendChild(box);
     box.querySelectorAll("button").forEach(b=>b.onclick=()=>fetch("/api/loan",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({who:a.by,act:b.dataset.a,file:a.file})}).then(r=>r.json()).then(j=>{if(j.ok){S.staff=j.staff;closeDoc()}else alert(j.err||"안 됨")}))}
   if(k==="sign"&&a.kind==="연봉"&&isLead()&&(a.status||"대기")==="대기"&&W4.includes(a.by)){
@@ -1057,7 +1057,7 @@ function morning(){const SI=S.sites||{},d0=new Date();d0.setHours(0,0,0,0);const
   const hm2=t=>{const d=new Date(t*1000);return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")};
   const sh=(S.shares||[]).filter(x=>x.t>=t0).map(x=>{const a=esc(DEVKO[x.by]||x.by),b=esc(DEVKO[x.to]||x.to),pc=x.piece?` 「${esc(String(x.piece).slice(0,16))}」`:"";
     return x.status==="done"?`${hm2(x.t)} ${a} → ${b}${pc} 가져감 · ${hm2(x.t_done)} 끝${x.ev?"("+esc(String(x.ev).slice(0,12))+")":""}`:x.status==="take"?`${hm2(x.t)} ${a} → ${b}${pc} 가져감`:x.status==="decline"?`${a} → ${b} 못 받음(${esc(x.why||"까닭 없음")})`:x.status==="timeout"?`${a} → ${b} 답 없음`:`${hm2(x.t)} ${a} → ${b}${pc} 건넴 · 답 기다림`});
-  const look=[sh.length&&`🤲 나눔 ${sh.length}: ${sh.slice(0,3).join(" / ")}${sh.length>3?" …":""}`,lg.length&&`📒 지갑 소식 ${lg.length}(대출 ${loans})`,hand&&`🙋 감독 손 ${hand}칸`,sign&&`🖋️ 결재 기다림 ${sign}`,gr.length&&`😤 불만 답 없음 ${gr.length}`,pt.length&&`🚨 순찰 걸림 · ${pt.map(d=>DEVKO[d]).join(" · ")}`].filter(Boolean);
+  const look=[sh.length&&`🤲 나눔 ${sh.length}: ${sh.slice(0,3).join(" / ")}${sh.length>3?" …":""}`,lg.length&&`📒 지갑 소식 ${lg.length}(대출 ${loans})`,hand&&`🙋 사장 손 ${hand}칸`,sign&&`🖋️ 결재 기다림 ${sign}`,gr.length&&`😤 불만 답 없음 ${gr.length}`,pt.length&&`🚨 순찰 걸림 · ${pt.map(d=>DEVKO[d]).join(" · ")}`].filter(Boolean);
   return `<details class="morn" ${new Date().getHours()<12?"open":""}><summary>🌅 아침 한 장 <span class="muted">${look.length?look.length+"가지 볼 것":"볼 것 없음"} · 밤사이 보고 ${reps.length}</span></summary>
   ${look.length?`<div class="mk">${look.map(x=>`<span>${x}</span>`).join("")}</div>`:""}
   ${mt?`<div class="mrow"><b>회의 ${esc(mt.id)}</b> ${md(String(mt.result).split("\n").filter(l=>l.trim()&&!l.startsWith("#")).slice(0,4).join(" · "))}</div>`:""}
@@ -1111,19 +1111,19 @@ function roomCard(d){const s=st(d),hs=s.house||{},bt=ROOM_TIER[s.rank]||2,tier=h
   const all=[...buys.slice(0,slots),...gifts.slice(0,GIFT_SLOTS)],store_n=Math.max(0,buys.length-slots)+Math.max(0,gifts.length-GIFT_SLOTS);
   const on=(S.agents||[]).some(a=>a.dev===d&&a.who!=="intern"&&a.room!=="off");
   const items=all.map((x,i)=>{const it=(ITEMS||{})[x.id]||{ko:x.id,cat:"",size:"s"},[px,py]=roomSlotXY(i,Math.max(all.length,6)),w=({s:7,m:11,l:15})[it.size]||8;
-    return `<div class="ri ${x.kind}" style="left:${px}%;top:${py}%;width:${w}%;z-index:${Math.round(py)}" title="${esc(it.ko)}${x.kind==="gift"?" · 🎁 감독 선물":" · "+(x.price||it.price||"")+" 쿠키"}"><img src="img/items/${esc(x.id)}.webp" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${ITEM_EMO[it.cat]||"📦"}'}))">${x.kind==="gift"?"<i>🎁</i>":""}</div>`}).join("");
+    return `<div class="ri ${x.kind}" style="left:${px}%;top:${py}%;width:${w}%;z-index:${Math.round(py)}" title="${esc(it.ko)}${x.kind==="gift"?" · 🎁 사장 선물":" · "+(x.price||it.price||"")+" 쿠키"}"><img src="img/items/${esc(x.id)}.webp" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${ITEM_EMO[it.cat]||"📦"}'}))">${x.kind==="gift"?"<i>🎁</i>":""}</div>`}).join("");
   const me=on?"":`<img class="rch" src="${IMG[d]}" alt=""><span class="rzz">💤 퇴근</span>`;
   const left=walletOf(d);
   return `<div class="rcard"><div class="rpic" style="background-image:url(${hs.id&&!hs.seized&&tier===hs.tier?`img/houses/${hs.id}.webp`:`img/rooms/tier${tier}.webp`})">${items}${me}</div>
     <div class="rcap"><b>${esc(s.name||d)}</b> · ${esc(gradeTxt(s))} · ${ROOM_NAME[tier]}${hs.ko&&!hs.seized&&tier===hs.tier?" · "+esc(hs.ko):""} · 칸 ${(R.items||[]).length}/${slots}${(R.gifts||[]).length?" · 🎁 "+R.gifts.length:""}${store_n?" · 📦 창고 "+store_n:""} · 남은 쿠키 ${left}${s.house&&s.house.deposit?" · 보증금 "+s.house.deposit:""}${s.loan&&s.loan.due?" · 💸 빚 "+s.loan.due:""}${s.cut&&s.cut.weeks?" · ✂️ 감봉 "+s.cut.amt+" · "+s.cut.weeks+"주":""} · ${on?"출근 중":"퇴근"}
-    ${isLead()?`<button class="b ghost gbtn" data-d="${d}">🎁 선물</button>${s.loan&&s.loan.due?`<button class="b red bobtn" data-d="${d}" title="감독이 남은 빚을 갚아 줌 · 대신 주급 30% 깎임 12주">💸 대신 갚기</button>`:""}`:""}</div></div>`}
+    ${isLead()?`<button class="b ghost gbtn" data-d="${d}">🎁 선물</button>${s.loan&&s.loan.due?`<button class="b red bobtn" data-d="${d}" title="사장이 남은 빚을 갚아 줌 · 대신 주급 30% 깎임 12주">💸 대신 갚기</button>`:""}`:""}</div></div>`}
 const GIFT_SLOTS=6;
 
 const ro=w=>{const c=(w||"").charCodeAt(w.length-1)-0xAC00;return w+(c>=0&&c<11172&&c%28&&c%28!==8?"으로":"로")};
 function ledgerTxt(x){const n=(st(x.who).name||DEVKO[x.who]||x.who),it=((ITEMS||{})[x.id]||{}).ko||x.id;
   return ({buy:`🛒 ${n} — ${it} 샀어(${x.price} 쿠키${x.card?" · 💳 카드":""})`,move:`🚚 ${n} — ${ro(ROOM_NAME[x.tier]||"새 집")} 이사(보증금 ${x.deposit}${x.borrow?` · 대출 ${x.borrow} → 갚을 돈 ${x.due}`:""})`,
     evict:`📉 ${n} — 빚을 못 갚아 ${ro(ROOM_NAME[x.tier]||"낮은 집")}(남은 빚 ${x.due})`,seize:`🏷️ ${n} — ${it} ${x.card?"카드 ":""}압류(남은 빚 ${x.due})`,
-    bailout:`💸 감독이 ${n} 빚 ${x.paid} 대신 갚음 · 주급 −${x.cut} ${x.weeks}주`,gift:`🎁 감독이 ${n}에게 ${it} 선물`,dock:`✂️ ${n} — 이번 주급 ${x.f>0?"절반":"없음"}(${(x.why||[]).join(" · ")})`,praise:`👏 감독이 ${n} 칭찬`,catch:`🖍️ ${n} — ${st(x.target).name||DEVKO[x.target]||x.target} 실수를 잡아 줌${x.cookie?" · 🍪+1":""}`,payoff:`🎉 ${n} — ${x.what==="card"?"카드":"대출"} 빚 다 갚음`,card:`💳 ${n} — 카드 값 ${x.paid} 냄${x.debt?` · 못 낸 몫 이자 붙어 카드 빚 ${x.debt}`:""}`})[x.kind]||`${n} ${x.kind}`}
+    bailout:`💸 사장이 ${n} 빚 ${x.paid} 대신 갚음 · 주급 −${x.cut} ${x.weeks}주`,gift:`🎁 사장이 ${n}에게 ${it} 선물`,dock:`✂️ ${n} — 이번 주급 ${x.f>0?"절반":"없음"}(${(x.why||[]).join(" · ")})`,praise:`👏 사장이 ${n} 칭찬`,catch:`🖍️ ${n} — ${st(x.target).name||DEVKO[x.target]||x.target} 실수를 잡아 줌${x.cookie?" · 🍪+1":""}`,payoff:`🎉 ${n} — ${x.what==="card"?"카드":"대출"} 빚 다 갚음`,card:`💳 ${n} — 카드 값 ${x.paid} 냄${x.debt?` · 못 낸 몫 이자 붙어 카드 빚 ${x.debt}`:""}`})[x.kind]||`${n} ${x.kind}`}
 
 setInterval(()=>{if(!S||document.hidden)return;const R=(S.rumors||[]).filter(r=>r&&r.text&&(r.sign<0||Math.random()<.4));if(!R.length)return;const r=R[Math.random()*R.length|0];
   const by=(S.agents||[]).filter(a=>a.who!=="intern"&&a.dev!==r.who);if(!by.length)return;const a=by[Math.random()*by.length|0];
@@ -1141,7 +1141,7 @@ function openRooms(){if(!S)return;const m=$("roomsmodal");m.hidden=false;m.query
   const inc=d=>{const s=st(d),c=s.cut&&s.cut.weeks?s.cut.amt:0;return Math.max(0,weeklyOf(s)-c)+2};
   m.querySelector(".pp").innerHTML=`<div class="ptab"><table><tr><th>집</th>${W4.map(d=>`<th>${FACE[d]} ${esc((st(d).name||d).split(" ").pop())}</th>`).join("")}</tr>`+ROOM_NAME.slice(1).map((nm,i)=>{const t=i+1;
     return `<tr><td>${t}. ${nm}</td>${W4.map(d=>{const b=ROOM_TIER[st(d).rank]||2,up=t-b,have=walletOf(d);if(up<=0)return`<td class="muted">${up===0?"🏠 지금 기본":"공짜"}</td>`;
-      const dep=inc(d)*6*up,lim=inc(d)*(up===1?4:up===2?8:0),ok=have>=dep?"✅ 모은 돈으로":up===1&&dep-have<=lim?"🏦 대출로":up===2&&dep-have<=lim?"🖋️ 감독 승인 대출":"⏳ 더 모아야";
+      const dep=inc(d)*6*up,lim=inc(d)*(up===1?4:up===2?8:0),ok=have>=dep?"✅ 모은 돈으로":up===1&&dep-have<=lim?"🏦 대출로":up===2&&dep-have<=lim?"🖋️ 사장 승인 대출":"⏳ 더 모아야";
       return `<td>${dep}<small> ${ok}</small></td>`}).join("")}</tr>`}).join("")+`</table></div>`;
   const pi=m.querySelector(".pi"),drawP=q=>{pi.innerHTML=Object.values(ITEMS||{}).filter(it=>!q||it.ko.includes(q)||(it.cat||"").includes(q)||(it.who||"").includes(q)).sort((a,b)=>a.price-b.price).slice(0,120).map(it=>`<span class="pch"><img src="img/items/${esc(it.id)}.webp" alt="" onerror="this.remove()">${esc(it.ko)} <b>${it.price}</b></span>`).join("")};
   drawP("");m.querySelector(".pq").oninput=e=>drawP(e.target.value.trim());
@@ -1275,7 +1275,7 @@ function side0(){
     P.innerHTML=(caught?`<div class="muted" style="margin-bottom:6px">🖍️ 오늘 서로 잡은 것 ${caught}</div>`:"")+C.map(c=>`<div class="jc"><div class="row" style="margin:0">${(c.pieces||[]).length||c.done?"":`<span class="flag" title="맡은 동물이 없어 — 회의 첫 안건">🚩 주인 없음</span>`}<b>${esc(c.name)}</b>${(rvOf(c).slice(-1)[0]||{}).res==="✓"?' <span title="교차 검토 ✓ (승인 아님)">🔎✓</span>':""}<span class="faces">${[...new Set((c.pieces||[]).map(p=>p.who))].map(w=>`<img src="${IMG[w]||IMG.intern}" alt="">`).join("")}</span>${c.done?" · 끝 · 하이파이브":""}</div>${(c.pieces||[]).map(p=>`<div class="who"><b>${esc(st(p.who).name||p.who)}</b>${chipsOf(p.what)}</div>`).join("")}${(S.shares||[]).filter(x=>x.card===c.id&&(x.status==="take"||x.status==="done")).map(x=>`<div class="who"><b>${esc(st(x.to).name||x.to)}</b><span class="pcs"><span class="pc">🤲 ${esc(x.piece||"나눔 조각")}</span><span class="pc">${esc(DEVKO[x.by]||x.by)}이 건넴${x.status==="done"?" · 끝":""}</span></span></div>`).join("")}${rvLine(c)}</div>`).join("")||'<div class="muted">일 카드 없음</div>';
   }else if(tab==="gripe"){const G=(S.gripes||[]).slice().sort((a,b)=>(a.status==="접수"?0:1)-(b.status==="접수"?0:1)||(b.plus||[]).length-(a.plus||[]).length||b.t-a.t);
 
-    P.innerHTML=`<div class="muted">일하며 불편한 것 · 감독께 하는 불만도 환영해요. <details class="tipd"><summary>올리는 법 ⓘ</summary><span>창에서 <code>office_gripe.py post "제목" "내용"</code> · 감독께는 <code>--about boss</code> · 고친 기기가 답을 달아요</span></details></div>`+(G.map(g=>`<details class="gp ${g.status==="접수"?"open":"done"}"><summary>${W4.includes(g.by)?`<img src="${IMG[g.by]}" alt="">`:""}<span class="ast2 ${g.status==="고침"?"ok":g.status==="안고침"?"no":g.status==="보류"?"hold":"wait"}">${esc(g.status==="접수"?"답 없음":g.status)}</span>${g.about==="boss"?'<span class="ast2 hold">🦁 감독께</span>':""}<b>${esc(g.title)}</b>${(g.plus||[]).length?`<span class="pl" title="나도 그래">🙋 ${(g.plus||[]).map(k=>FACE[k]||esc(k)).join("")}</span>`:""}<span class="muted">${hm(g.t)}</span></summary><div class="gb">${dotLines(g.body)}</div>${(g.answers||[]).map(a=>`<div class="ga">${FACE[a.by]||esc(a.by)} <b>${esc(a.status)}</b>\n${dotLines(a.text)} <span class="muted">${hm(a.t)}</span></div>`).join("")}</details>`).join("")||'<div class="muted">아직 올라온 불만 없음</div>');
+    P.innerHTML=`<div class="muted">일하며 불편한 것 · 사장께 하는 불만도 환영해요. <details class="tipd"><summary>올리는 법 ⓘ</summary><span>창에서 <code>office_gripe.py post "제목" "내용"</code> · 사장께는 <code>--about boss</code> · 고친 기기가 답을 달아요</span></details></div>`+(G.map(g=>`<details class="gp ${g.status==="접수"?"open":"done"}"><summary>${W4.includes(g.by)?`<img src="${IMG[g.by]}" alt="">`:""}<span class="ast2 ${g.status==="고침"?"ok":g.status==="안고침"?"no":g.status==="보류"?"hold":"wait"}">${esc(g.status==="접수"?"답 없음":g.status)}</span>${g.about==="boss"?'<span class="ast2 hold">🦁 사장께</span>':""}<b>${esc(g.title)}</b>${(g.plus||[]).length?`<span class="pl" title="나도 그래">🙋 ${(g.plus||[]).map(k=>FACE[k]||esc(k)).join("")}</span>`:""}<span class="muted">${hm(g.t)}</span></summary><div class="gb">${dotLines(g.body)}</div>${(g.answers||[]).map(a=>`<div class="ga">${FACE[a.by]||esc(a.by)} <b>${esc(a.status)}</b>\n${dotLines(a.text)} <span class="muted">${hm(a.t)}</span></div>`).join("")}</details>`).join("")||'<div class="muted">아직 올라온 불만 없음</div>');
   }
 }
 
@@ -1295,7 +1295,7 @@ if("documentPictureInPicture" in window){$("pipbtn").hidden=false;$("pipbtn").on
 function pipFill(){if(!pipWin||!S)return;const SI=S.sites||{},hand=Object.values(SI).reduce((k,si)=>k+((si.boss_hand||{}).n||0),0),pat=Object.values(SI).reduce((k,si)=>k+((si.patrol||{}).n||0),0);
   const rows=W4.map(d=>{const a=(S.agents||[]).find(x=>x.dev===d&&x.who!=="intern"),act=a&&a.act,sec=act?act.secs||0:0;
     return `<div class="r"><b>${DEVKO[d]}</b>${esc(((S.loads||{})[d]||{}).level||"")} ${act?esc(act.tool||""):(S.devs||{})[d]==="on"?"쉬는 중":"꺼짐"}<s>${act?sec+"초":""}</s></div>`}).join("");
-  pipWin.document.getElementById("pp").innerHTML=`<div class="top">🖐 감독 손 ${hand} ${pat?"· 🚨 "+pat:""}</div>${rows}`}
+  pipWin.document.getElementById("pp").innerHTML=`<div class="top">🖐 사장 손 ${hand} ${pat?"· 🚨 "+pat:""}</div>${rows}`}
 
 function posOf(dev){if(dev==="boss"){const w=walkers.boss;return w?[w.x,w.y-60]:[1200,640]}const a=(S.agents||[]).find(x=>x.dev===dev&&x.who!=="intern"),w=a&&walkers[a.id];return w?[w.x,w.y-60]:((DESK_TOP[dev]||[[1024,600]])[0])}
 const flyLast={};
@@ -1334,7 +1334,7 @@ function replyBubbles(){for(const o of S.orders||[])for(const [k,r] of Object.en
 function alertMsg(m){const homes=S&&S.agents.find(a=>a.who===(S.leader||LEAD));if(homes)say(homes.id,m||"못 받았어요")}
 $("send").onclick=send;$("order").onkeydown=e=>{if(e.key==="Enter"&&!e.isComposing)send()};
 
-function ideaHeld(i){return !i.vote&&/^\s*\(보류[\s)·]|감독 보류/.test(String(i.text||""))}
+function ideaHeld(i){return !i.vote&&/^\s*\(보류[\s)·]|사장 보류/.test(String(i.text||""))}
 
 function ideaParts(t){t=String(t||"").replace(/^\s*\(보류\)\s*|^\s*\(보류\s*·\s*/,"");let mark="";const k=t.indexOf("◐");if(k>=0){mark=t.slice(k).trim();t=t.slice(0,k).replace(/[\s·]+$/,"")}
   const m=t.match(/^(.+?)\.\s+([\s\S]*)$/),j=t.indexOf(" · "),title=m?m[1]:(j>0?t.slice(0,j):t),rest=(m?m[2]:(j>0?t.slice(j+3):"")).trim();
@@ -1418,20 +1418,20 @@ document.getElementById("roomsbtn").onclick=openRooms;
     const pt=W4.filter(d=>((SI[d]||{}).patrol||{}).n);
     if(pt.length)L.push({k:"pat",n:pt.length,ico:"🚨",txt:`순찰에 걸린 곳 · ${pt.map(d=>DEVKO[d]).join(" · ")}`,go:()=>{const e=extraEls.siren;if(e)e.click()}});
     const gr=(S.gripes||[]).filter(g=>g.about==="boss"&&g.status==="접수");
-    if(gr.length)L.push({k:"gripe",n:gr.length,ico:"😤",txt:`감독님께 온 불만 ${gr.length}건`,go:()=>openTab("gripe")});
+    if(gr.length)L.push({k:"gripe",n:gr.length,ico:"😤",txt:`사장님께 온 불만 ${gr.length}건`,go:()=>openTab("gripe")});
     return L}
   const counts=L=>{const c={};L.forEach(x=>c[x.k]=(c[x.k]||0)+x.n);return c};
   function hint(){const C=(S.cards||[]).filter(c=>!c.done).length,mt=(S.meetings||[])[0];
     return `<div class="muted">둘러보실 곳: ${mt?`회의 탭 ${mt.id.slice(9,11)}:${mt.id.slice(11,13)} 회의${mt.result?" 결과":""} · `:""}일 카드 ${C}장 · 비서 브리핑의 🌅 아침 한 장</div>`}
   function show(L,fresh,hello){
-    box.innerHTML=`<div class="gh"><b>${hello?"🐾 어서 오세요, 감독님!":"🧭 지금 정해 주실 것"}</b><button class="gx" title="닫기 (Esc)">✕</button></div>`+
+    box.innerHTML=`<div class="gh"><b>${hello?"🐾 어서 오세요, 사장님!":"🧭 지금 정해 주실 것"}</b><button class="gx" title="닫기 (Esc)">✕</button></div>`+
       (L.length?L.map((x,i)=>`<button class="gi${fresh.has(x.k)?" new":""}" data-i="${i}"><span>${x.ico}</span><span>${esc(x.txt)}</span>${fresh.has(x.k)?"<em>새로</em>":""}<span class="go">보기 ›</span></button>`).join("")
         :`<div class="g0">🌿 지금 급하게 정해 주실 건 없어요.${hint()}</div>`);
     box.hidden=false;box.dataset.hello=hello?"1":"";
     box.querySelectorAll(".gi").forEach(b=>b.onclick=()=>{const x=L[+b.dataset.i];box.hidden=true;try{x.go()}catch(e){jerr("안내판 · "+(e&&e.message||e))}});
     box.querySelector(".gx").onclick=()=>{box.hidden=true};
     clearTimeout(box._t);if(!L.length)box._t=setTimeout(()=>{box.hidden=true},9000)}
-  function greet(){const A=(S.agents||[]).filter(a=>a.who!=="intern"&&a.room!=="off"),H=["감독님 오셨어요!","어서 오세요, 감독님 ☕","기다리고 있었어요!","오늘도 반가워요 🐾"];
+  function greet(){const A=(S.agents||[]).filter(a=>a.who!=="intern"&&a.room!=="off"),H=["사장님 오셨어요!","어서 오세요, 사장님 ☕","기다리고 있었어요!","오늘도 반가워요 🐾"];
     A.forEach((a,i)=>setTimeout(()=>{try{say(a.id,H[i%H.length])}catch(e){}},400+i*900))}
   function hello(){if(!S)return;const away=Date.now()-last()>AWAY;mark();if(!away)return;
     const L=items();prev=counts(L);greet();show(L,new Set(),true)}
@@ -1441,7 +1441,7 @@ document.getElementById("roomsbtn").onclick=openRooms;
     if(prev===null){prev=cur;t0=Date.now();hello();return}
     if(Date.now()-t0<10000){prev=cur;if(!box.hidden&&box.dataset.hello)show(L,new Set(),true);return}
     const fresh=new Set(Object.keys(cur).filter(k=>cur[k]>(prev[k]||0)));prev=cur;
-    if(fresh.size){show(L,fresh,!box.hidden&&!!box.dataset.hello);const h=(S.agents||[]).find(a=>a.who===(S.leader||LEAD));if(h)try{say(h.id,"감독님, 정해 주실 게 왔어요 🧭")}catch(e){}}}
+    if(fresh.size){show(L,fresh,!box.hidden&&!!box.dataset.hello);const h=(S.agents||[]).find(a=>a.who===(S.leader||LEAD));if(h)try{say(h.id,"사장님, 정해 주실 게 왔어요 🧭")}catch(e){}}}
   setInterval(()=>{try{check()}catch(e){jerr("안내판 · "+(e&&e.message||e))}},2000);
   ["pointerdown","keydown","pointermove","wheel"].forEach(t=>addEventListener(t,()=>{if(Date.now()-mv<5000)return;mv=Date.now();try{hello()}catch(e){jerr("맞이 · "+(e&&e.message||e))}},{passive:true}));
   document.addEventListener("visibilitychange",()=>{if(!document.hidden)try{hello()}catch(e){jerr("맞이 · "+(e&&e.message||e))}});

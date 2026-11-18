@@ -21,7 +21,7 @@ DEFAULTS = {
     "share_dir": None,
     "local_dir": "./data",
     "private_devices": [],
-    "owner_title": "감독",
+    "owner_title": "사장",
     "checklist_path": None,
     "lessons_path": None,
     "weather": None,
@@ -84,7 +84,7 @@ def load(path=None):
     else:
         cfg["weather"] = None
     cfg["meet_at"] = [x for x in (cfg.get("meet_at") or []) if re.fullmatch(r"\d\d:\d\d", str(x))]
-    cfg["owner_title"] = str(cfg.get("owner_title") or "감독")[:12]
+    cfg["owner_title"] = str(cfg.get("owner_title") or "사장")[:12]
     cfg["port"] = int(cfg.get("port") or 8765)
     cfg["play"] = bool(cfg.get("play", True))
     cfg["path"] = os.path.abspath(path)

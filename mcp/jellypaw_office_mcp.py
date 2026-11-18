@@ -257,7 +257,7 @@ def t_meeting(a):
 
 
 def t_approval(a):
-    """결재함 — 올리기 · 보기(도장 = 실제 「해」 는 그 기기 창에서 감독이 · 이 도구는 상태를 안 바꿈)."""
+    """결재함 — 올리기 · 보기(도장 = 실제 「해」 는 그 기기 창에서 사장이 · 이 도구는 상태를 안 바꿈)."""
     D = os.path.join(SHARED, "approvals")
     if a["cmd"] == "list":
         rows = []
@@ -424,7 +424,7 @@ def t_house(a):
     up = int(a.get("up") or 1)
     import urllib.request
     url = "http://127.0.0.1:%d/api/house" % ARGS.port
-    rule = "보증금 = 주 수입 × 6 × 칸 · 옛 보증금은 돌려받음 · 모자라면 한 칸은 스스로 빌림(× 4 · 이자 한 번 25%) · 두 칸은 감독 승인 대출 · 세 칸부터는 다 모아야"
+    rule = "보증금 = 주 수입 × 6 × 칸 · 옛 보증금은 돌려받음 · 모자라면 한 칸은 스스로 빌림(× 4 · 이자 한 번 25%) · 두 칸은 사장 승인 대출 · 세 칸부터는 다 모아야"
     if not a.get("apply"):
         req = urllib.request.Request(url, data=json.dumps({"who": ARGS.device, "up": up, "dry": True}).encode(), method="POST",
                                      headers={"Content-Type": "application/json", "Origin": "http://127.0.0.1:%d" % ARGS.port})
@@ -786,7 +786,7 @@ def tools():
          "inputSchema": _p("불만함", cmd=S("list · post · plus · answer", True), id=S("글 id"), title=S("제목 40자 안"), text=S("내용 · 답"), status=S("고침 · 보류 · 안고침"), apply=B("참이면 씀")), "fn": t_gripe},
         {"name": "office_meeting", "description": "회의 — read(봉인 지킴) · s1(1단) · s2(투표 「번호 찬/반」) · g(건의) 를 meetings/<id>/<kind>_<기기>.md 에. 줄마다 40자 안 권장.",
          "inputSchema": _p("회의", id=S("회의 id 예: 20261031-0217", True), kind=S("read · s1 · s2 · g", True), text=S("쓸 글"), apply=B("참이면 씀")), "fn": t_meeting},
-        {"name": "office_approval", "description": "결재함 — list · post(doc = approval_form.md 칸: kind · title · summary · points · why · preview · risk · undo · where · card · review · meeting). 도장(실제 「해」)은 그 기기 창에서 감독이. 비공개 기기는 이 도구로 안 올림(껍데기 규칙).",
+        {"name": "office_approval", "description": "결재함 — list · post(doc = approval_form.md 칸: kind · title · summary · points · why · preview · risk · undo · where · card · review · meeting). 도장(실제 「해」)은 그 기기 창에서 사장이. 비공개 기기는 이 도구로 안 올림(껍데기 규칙).",
          "inputSchema": _p("결재함", cmd=S("list · post", True), doc={"type": "object", "description": "결재 문서"}, apply=B("참이면 올림")), "fn": t_approval},
         {"name": "office_patrol", "description": "현장 순찰 — 공유 폴더에 경로 · 메일 · 토큰 · 기기 안 낱말 꼴이 섞였는지 「파일:줄 · 무엇」 만(글은 안 찍음). words = 기기 안 낱말 목록 파일(공유 폴더 밖).",
          "inputSchema": _p("순찰", words=S("낱말 목록 파일(선택)")), "fn": t_patrol},
@@ -796,7 +796,7 @@ def tools():
          "inputSchema": _p("숙소", cmd=S("shop · mine · buy", True), id=S("물건 id"), cat=S("갈래"), who=S("동물 취향"), max={"type": "integer", "description": "값 상한"}, note=S("한 줄 일기"), card=B("참이면 젤리발 카드로(한도 주 수입 × 2 · 주급 날 갚음 · 못 갚으면 이자 50% · 바로 압류)"), apply=B("참이면 삼")), "fn": t_room},
         {"name": "office_catch", "description": "빨간 펜 — 다른 기기의 실수를 짚어 줬을 때 남김(target · what 40자 · evidence 경로나 md5). 증거 있으면 쿠키 1 · 하루 5번 · 제 것 안 됨 · 공유엔 누가 · 누구 · 쿠키만. apply 참일 때만.",
          "inputSchema": _p("빨간 펜", target=S("잡힌 기기 id", True), what=S("무엇(40자 · 이 창에만)"), evidence=S("증거 경로나 md5"), apply=B("참이면 남김")), "fn": t_catch},
-        {"name": "office_house", "description": "이사 — up 칸 위 집으로(보증금 = 주 수입 × 6 × 칸 · 모자라면 한 칸은 스스로 빌림 · 두 칸은 감독 승인 대출 · 세 칸부터는 다 모아야). 돈을 모아 더 좋은 집을 사는 것도 자유.",
+        {"name": "office_house", "description": "이사 — up 칸 위 집으로(보증금 = 주 수입 × 6 × 칸 · 모자라면 한 칸은 스스로 빌림 · 두 칸은 사장 승인 대출 · 세 칸부터는 다 모아야). 돈을 모아 더 좋은 집을 사는 것도 자유.",
          "inputSchema": _p("이사", up={"type": "integer", "description": "몇 칸 위(1~)"}, house=S("그 띠 집 id(미리보기 목록 · 안 주면 아무거나)"), apply=B("참이면 이사")), "fn": t_house},
         {"name": "office_pkg", "description": "판 받기 — 꾸러미 폴더(pkg)와 내 설치 폴더(dest)를 md5 로 견줌 · apply 면 다른 것만 복사하고 옛것은 dest/_이전판/<시각> 에 둠 · 복사 뒤 md5 대조.",
          "inputSchema": _p("판 받기", pkg=S("꾸러미 폴더", True), dest=S("내 설치 폴더", True), apply=B("참이면 복사")), "fn": t_pkg},
